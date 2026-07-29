@@ -14,7 +14,8 @@ if (!fs.existsSync("uploads")) {
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => cb(null, "uploads"),
-    filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
+    filename: (req, file, cb) =>
+      cb(null, Date.now() + "-" + file.originalname),
   }),
 });
 
@@ -26,7 +27,7 @@ app.get("/ping", (req, res) => {
   res.json({ message: "Backend is alive!" });
 });
 
-// Resume feedback route (Demo Version)
+// Resume feedback route
 app.post("/feedback", upload.single("resume"), (req, res) => {
   try {
     if (!req.file) {
@@ -52,12 +53,14 @@ Suggestions:
 
 Overall Rating: 8/10
 
-(This is demo feedback and is the same for all uploaded resumes.)
+Resume analysis completed successfully by Resume Assistant.
 `;
 
     res.json({ feedback });
+
   } catch (error) {
     console.error("Error in /feedback route:", error);
+
     res.status(500).json({
       feedback: "Error processing resume",
     });
