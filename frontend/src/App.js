@@ -15,29 +15,56 @@ function App() {
     formData.append("resume", file);
 
     try {
-      const res = await axios.post("http://localhost:5000/feedback", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      });
+      const res = await axios.post(
+        "https://resume-assistant-api-4b5m.onrender.com/feedback",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
       setFeedback(res.data.feedback);
+
     } catch (error) {
       console.error("Upload error:", error.message);
+
       if (error.response) {
-        // Backend responded with an error
-        setFeedback(`Server error: ${error.response.data.feedback || "Unknown error"}`);
+        setFeedback(
+          `Server error: ${error.response.data.feedback || "Unknown error"}`
+        );
       } else if (error.request) {
-        // No response received
-        setFeedback("No response from backend. Is it running on port 5000?");
+        setFeedback("No response from backend. Please try again.");
       } else {
-        // Something else went wrong
-        setFeedback("Error uploading resume");
+        setFeedback("Error uploading resume.");
       }
     }
   };
 
   return (
-    <div style={{ fontFamily: "Arial", padding: "20px", maxWidth: "600px", margin: "auto" }}>
-      <h1 style={{ color: "#2c3e50", textAlign: "center" }}>Resume Assistant</h1>
-      <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+    <div
+      style={{
+        fontFamily: "Arial",
+        padding: "20px",
+        maxWidth: "600px",
+        margin: "auto",
+      }}
+    >
+      <h1
+        style={{
+          color: "#2c3e50",
+          textAlign: "center",
+        }}
+      >
+        Resume Assistant
+      </h1>
+
+      <input
+        type="file"
+        onChange={(e) => setFile(e.target.files[0])}
+      />
+
       <button
         onClick={handleUpload}
         style={{
@@ -47,12 +74,20 @@ function App() {
           color: "white",
           border: "none",
           borderRadius: "5px",
-          cursor: "pointer"
+          cursor: "pointer",
         }}
       >
         Upload & Get Feedback
       </button>
-      <div style={{ marginTop: "20px", background: "#ecf0f1", padding: "15px", borderRadius: "5px" }}>
+
+      <div
+        style={{
+          marginTop: "20px",
+          background: "#ecf0f1",
+          padding: "15px",
+          borderRadius: "5px",
+        }}
+      >
         <h3>Feedback:</h3>
         <p>{feedback}</p>
       </div>
